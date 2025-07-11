@@ -12,6 +12,8 @@ public class SkeletonIdleState : SkeletonGroundedState
     {
         base.Enter();
 
+        Debug.Log("Enter Idle State");
+
         stateTimer = enemy.idleTime;
     }
 

@@ -11,6 +11,8 @@ public class SkeletonMoveState : SkeletonGroundedState
     public override void Enter()
     {
         base.Enter();
+
+        Debug.Log ("Enter Move State");
     }
 
     public override void Exit()
@@ -22,12 +24,15 @@ public class SkeletonMoveState : SkeletonGroundedState
     {
         base.Update();
 
-        enemy.SetVelocity( enemy.moveSpeed * enemy.facingDir, enemy.rb.velocity.y );
+        enemy.SetVelocity( enemy.moveSpeed * enemy.facingDir, rb.velocity.y );
+
+        Debug.Log("IsWallDetected: " + enemy.IsWallDetected() + ", IsGroundDetected: " + enemy.IsGroundDetected());
 
         if (enemy.IsWallDetected() || !enemy.IsGroundDetected() )
         {
             enemy.Flip();
             stateMachine.ChangeState(enemy.idleState);
         }
+
     }
 }
