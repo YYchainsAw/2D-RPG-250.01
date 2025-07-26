@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class EnemyState 
 {
-    protected EnemyStateMachine stateMachine;
-    protected Enemy enemyBase;
-    protected Rigidbody2D rb;
+    protected EnemyStateMachine stateMachine; // 状态机引用
+    protected Enemy enemyBase; // 敌人本体引用
+    protected Rigidbody2D rb; // 刚体组件
 
-    protected bool triggerCalled;
-    private string animBoolName;
+    protected bool triggerCalled; // 动画事件触发标记
+    private string animBoolName; // 动画参数名
 
-    protected float stateTimer;
+    protected float stateTimer; // 状态计时器
 
     public EnemyState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName)
     {
@@ -20,11 +20,14 @@ public class EnemyState
         this.animBoolName = _animBoolName; 
     }
 
+
     public virtual void Update()
     {
         stateTimer -= Time.deltaTime;
     }
 
+
+   
     public virtual void Enter()
     {
         triggerCalled = false;
@@ -32,10 +35,14 @@ public class EnemyState
         enemyBase.anim.SetBool(animBoolName, true);
     }
 
+    
+ 
     public virtual void Exit()
     {
         enemyBase.anim.SetBool(animBoolName, false);
     }
+
+    // 动画事件触发
 
     public virtual void AnimationFinishedTrigger()
     {

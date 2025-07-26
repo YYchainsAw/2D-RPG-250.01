@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// 骷髅动画事件触发器，供动画事件调用
+
 public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
 {
     private Enemy_Skeleton enemy;
@@ -11,13 +14,13 @@ public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
         enemy = GetComponentInParent<Enemy_Skeleton>();
     }
 
-
-    // 供动画事件调用
+    // 动画完成事件
     public void AnimationFinishTrigger()
     {
         enemy.AnimationFinishedTrigger();
     }
 
+    // 攻击事件
     public void AttackTrigger()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(enemy.attackCheck.position, enemy.attackCheckRadius);

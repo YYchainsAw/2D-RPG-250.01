@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// 骷髅战斗状态
+
 public class SkeletonBattleState : EnemyState
 {
-    private Transform player;
-    private Enemy_Skeleton enemy;
-    private int moveDir;
+    private Transform player; // 玩家引用
+    private Enemy_Skeleton enemy; // 骷髅本体
+    private int moveDir; // 移动方向
+
     public SkeletonBattleState(Enemy _enemyBase, EnemyStateMachine _stateMachine, string _animBoolName, Enemy_Skeleton _enemy) : base(_enemyBase, _stateMachine, _animBoolName)
     {
         this.enemy = _enemy;
@@ -18,7 +22,7 @@ public class SkeletonBattleState : EnemyState
 
         Debug.Log("Enter Battle State");
 
-        player = GameObject.Find("Player").transform;
+        player = GameObject.Find("Player").transform; // 获取玩家引用
     }
 
     public override void Exit()
@@ -30,11 +34,12 @@ public class SkeletonBattleState : EnemyState
     {
         base.Update();
 
-
+        // 检测到玩家时，重置战斗计时
         if (enemy.IsPlayerDetected())
         {
             stateTimer = enemy.battleTime;
 
+            // 玩家在攻击距离内且可攻击则切换到攻击状态
             if (enemy.IsPlayerDetected().distance < enemy.attackDistance)
             {
                 if (CanAttack())
@@ -43,6 +48,7 @@ public class SkeletonBattleState : EnemyState
         }
         else
         {
+            // 玩家离开后，计时结束或距离过远切回idle
             if (stateTimer <= 0 || Vector2.Distance(player.transform.position, enemy.transform.position) > 10)
             {
                 stateMachine.ChangeState(enemy.idleState);
@@ -53,13 +59,18 @@ public class SkeletonBattleState : EnemyState
             }
         }
 
-        if (player.position.x >= enemy.transform.position.x)    
-            moveDir = 1;     
+        // 根据玩家位置调整朝向
+        if (player.position.x >= enemy.transform.position.x)
+            moveDir = 1;
         else if (player.position.x < enemy.transform.position.x)
             moveDir = -1;
 
+        // 向玩家方向移动
         enemy.SetVelocity(enemy.moveSpeed * moveDir, rb.velocity.y);
     }
+
+
+    // 判断是否可以攻击
 
     private bool CanAttack()
     {
@@ -72,5 +83,4 @@ public class SkeletonBattleState : EnemyState
 
         return false;
     }
-        
 }
