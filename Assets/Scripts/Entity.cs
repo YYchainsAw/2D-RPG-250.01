@@ -1,6 +1,7 @@
 // Assets\Entity.cs
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
 
 /// <summary>
@@ -8,6 +9,11 @@ using UnityEngine;
 /// </summary>
 public class Entity : MonoBehaviour
 {
+    [Header("Knockback info")]
+    [SerializeField] protected Vector2 knockbackDirection; // 击退力
+    [SerializeField] protected float knockbackDuration; // 击退力大小
+    protected bool isKnocked; // 是否正在被击退
+
     [Header("碰撞")]
     public Transform attackCheck; // 攻击检测点
     public float attackCheckRadius; // 攻击检测半径
@@ -23,6 +29,7 @@ public class Entity : MonoBehaviour
     #region Components
     public Animator anim { get; private set; } // 动画组件
     public Rigidbody2D rb { get; private set; } // 刚体组件
+    public EntityFX fx { get; private set; } // 特效组件
     #endregion
 
     /// <summary>
@@ -40,6 +47,7 @@ public class Entity : MonoBehaviour
     {
         anim = GetComponentInChildren<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        fx = GetComponent<EntityFX>();
     }
 
     /// <summary>
@@ -55,20 +63,40 @@ public class Entity : MonoBehaviour
     /// </summary>
     public virtual void Damage()
     {
+        fx.StartCoroutine("FlashFX"); // 播放闪烁特效
 
+        StartCoroutine(HitKnockback()); // 开始击退协程
+    }
+
+    protected virtual IEnumerator HitKnockback()
+    {
+        isKnocked = true;
+        
+        rb.velocity = new Vector2(knockbackDirection.x * -facingDir, knockbackDirection.y); 
+
+        yield return new WaitForSeconds(knockbackDuration); 
+
+        isKnocked = false; // 重置击退状态
     }
 
     #region 速度
     /// <summary>
     /// 速度归零
     /// </summary>
-    public void SetZeroVelocity() => rb.velocity = new Vector2(0, 0);
+    public void SetZeroVelocity() 
+    {
+        if (isKnocked) return; // 如果正在被击退，则不允许设置速度
+
+        rb.velocity = new Vector2(0, 0);
+    } 
 
     /// <summary>
     /// 设置速度并自动翻转
     /// </summary>
     public void SetVelocity(float _xVelocity, float _yVelocity)
     {
+        if (isKnocked) return; // 如果正在被击退，则不允许设置速度
+
         rb.velocity = new Vector2(_xVelocity, _yVelocity);
         FlipController(_xVelocity);
     }

@@ -6,6 +6,13 @@ public class Enemy : Entity
 {
     [SerializeField] protected LayerMask whatIsPlayer; // 玩家图层掩码，用于检测玩家
 
+    [Header("眩晕")]
+    public float stunDuration;   // 眩晕持续时间
+    public Vector2 stunDirection; // 眩晕时的击退方向
+    protected bool canBeStunned; // 是否可以被眩晕
+    [SerializeField] protected GameObject counterImage;
+
+
     [Header("移动")]
     public float moveSpeed; // 敌人移动速度
     public float idleTime; // 敌人空闲时间
@@ -31,6 +38,29 @@ public class Enemy : Entity
         base.Update();
 
         stateMachine.currentState.Update(); // 更新当前状态机的状态
+    }
+
+    public virtual void OpenCounterAttackWindow() // 打开反击攻击图像
+    {
+        canBeStunned = true; // 设置可以被眩晕
+        counterImage.SetActive(true); // 激活反击图像
+    }
+
+    public virtual void CloseCounterAttackWindow() // 关闭反击攻击图像
+    {
+        canBeStunned = false; // 设置不能被眩晕
+        counterImage.SetActive(false); // 禁用反击图像
+    }
+
+    public virtual bool CanBeStunned()// 检查是否可以被眩晕
+    {
+        if (canBeStunned) // 如果可以被眩晕
+        {
+            CloseCounterAttackWindow(); // 关闭反击攻击图像
+            return true; // 返回true
+        }
+
+        return false; // 否则返回false
     }
 
     public virtual void AnimationFinishedTrigger() => stateMachine.currentState.AnimationFinishedTrigger(); // 动画完成触发器，调用当前状态的动画完成方法

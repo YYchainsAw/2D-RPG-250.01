@@ -8,13 +8,33 @@ using UnityEngine;
 /// </summary>
 public class PlayerAnimationTriggers : MonoBehaviour
 {
-    private Player Player => GetComponentInParent<Player>();
+    private Player player;
+
+    private void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
 
     /// <summary>
     /// 动画完成事件
     /// </summary>
-    private void AnimationTrigger()
+    public void AnimationTrigger()
     {
-        Player.AnimationTrigger();
+        player.AnimationTrigger();
+    }
+
+    /// <summary>
+    /// 攻击事件
+    /// </summary>
+    public void AttackTrigger()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(player.attackCheck.position, player.attackCheckRadius);
+        foreach (var hit in colliders)
+        {
+            if (hit.GetComponent<Enemy>() != null)
+            {
+                hit.GetComponent<Enemy>().Damage();
+            }
+        }
     }
 }

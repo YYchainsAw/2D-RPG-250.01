@@ -15,7 +15,7 @@ public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
     }
 
     // 动画完成事件
-    public void AnimationFinishTrigger()
+    public void AnimationFinishedTrigger()
     {
         enemy.AnimationFinishedTrigger();
     }
@@ -32,4 +32,7 @@ public class Enemy_SkeletonAnimationTriggers : MonoBehaviour
             }
         }
     }
+
+    private void OpenCounterWindow() => enemy.OpenCounterAttackWindow(); // 打开反击窗口
+    private void CloseCounterWindow() => enemy.CloseCounterAttackWindow(); // 关闭反击窗口
 }

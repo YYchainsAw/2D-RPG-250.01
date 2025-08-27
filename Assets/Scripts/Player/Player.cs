@@ -9,7 +9,8 @@ using UnityEngine;
 public class Player : Entity
 {
     [Header("攻击详情")]
-    public Vector2[] attackMovement; // 攻击时的位移参数
+    public Vector2[] attackMovement; // 攻击时的位移参数 
+    public float counterAttackDuration; // 反击持续时间
 
     public bool isBusy { get; private set; } // 玩家是否处于忙碌状态（如攻击中）
     [Header("移动")]
@@ -37,6 +38,7 @@ public class Player : Entity
     public PlayerWallSlideState wallSlide { get; private set; } // 滑墙状态
     public PlayerWallJumpState wallJump { get; private set; } // 墙跳状态
     public PlayerPrimaryAttackState primaryAttack { get; private set; } // 主攻击状态
+    public PlayerCounterAttackState counterAttack { get; private set; } // 反击状态
     #endregion
 
     /// <summary>
@@ -56,6 +58,7 @@ public class Player : Entity
         wallSlide = new PlayerWallSlideState(this, StateMachine, "WallSlide");
         wallJump = new PlayerWallJumpState(this, StateMachine, "WallJump");
         primaryAttack = new PlayerPrimaryAttackState(this, StateMachine, "Attack");
+        counterAttack = new PlayerCounterAttackState(this, StateMachine, "CounterAttack");
     }
 
     /// <summary>
