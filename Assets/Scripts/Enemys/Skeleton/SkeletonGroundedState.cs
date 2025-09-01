@@ -18,7 +18,7 @@ public class SkeletonGroundedState : EnemyState
     {
         base.Enter();
 
-        player = GameObject.Find("Player").transform; // 获取玩家引用
+        player = PlayerManager.instance.player.transform; // 获取玩家引用
     }
 
     public override void Exit()
