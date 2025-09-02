@@ -18,8 +18,6 @@ public class Player : Entity
     public float jumpForce; // 跳跃力度
 
     [Header("冲刺")]
-    [SerializeField] private float dashCooldown; // 冲刺冷却时间
-    private float dashUsageTime; // 冲刺计时
     public float dashSpeed; // 冲刺速度
     public float dashDuration; // 冲刺持续时间
     public float dashDir { get; private set; } // 冲刺方向
@@ -104,11 +102,11 @@ public class Player : Entity
         if (IsWallDetected() && !IsGroundDetected())
             return;
 
-        dashUsageTime -= Time.deltaTime;
+      
 
-        if (Input.GetKeyDown(KeyCode.L) && dashUsageTime < 0)
+        if (Input.GetKeyDown(KeyCode.L) && SkillManager.instance.dash.CanUseSkill())
         {
-            dashUsageTime = dashCooldown;
+            
             dashDir = Input.GetAxisRaw("Horizontal");
             if (dashDir == 0)
                 dashDir = facingDir;

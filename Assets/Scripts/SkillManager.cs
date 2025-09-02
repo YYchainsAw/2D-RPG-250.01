@@ -6,6 +6,8 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager instance;
 
+    public Dash_Skill dash { get; private set; }
+
     private void Awake()
     {
         if (instance != null)
@@ -13,4 +15,10 @@ public class SkillManager : MonoBehaviour
         else
             instance = this;
     }
+
+    private void Start()
+    {
+        dash = GetComponent<Dash_Skill>();
+    }
+
 }
