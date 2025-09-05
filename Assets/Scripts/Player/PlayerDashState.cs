@@ -18,7 +18,7 @@ public class PlayerDashState : PlayerState
     {
         base.Enter();
 
-        SkillManager.instance.clone.CreateClone(Player.transform); // 创建分身
+        Player.skill.clone.CreateClone(Player.transform); // 创建分身
 
         stateTimer = Player.dashDuration; // 设置冲刺持续时间
     }

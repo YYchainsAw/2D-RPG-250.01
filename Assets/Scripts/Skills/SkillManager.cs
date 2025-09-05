@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SkillManager : MonoBehaviour
 {
+
     public static SkillManager instance;
 
     public Dash_Skill dash { get; private set; }

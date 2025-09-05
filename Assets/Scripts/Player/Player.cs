@@ -25,6 +25,8 @@ public class Player : Entity
     [Header("滑墙")]
     [SerializeField] public float slideSpeed; // 滑墙速度
 
+    public SkillManager skill { get; private set; } // 技能管理器引用
+
     #region States
     public PlayerStateMachine StateMachine { get; private set; } // 状态机
 
@@ -65,6 +67,9 @@ public class Player : Entity
     protected override void Start()
     {
         base.Start();
+
+        skill = SkillManager.instance;
+
         StateMachine.Initialize(idleState);
     }
 
